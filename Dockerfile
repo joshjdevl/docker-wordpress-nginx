@@ -1,8 +1,8 @@
-FROM ubuntu
+FROM ubuntu:precise
 MAINTAINER Eugene Ware <eugene@noblesamurai.com>
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get -y upgrade
+#RUN apt-get -y upgrade
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
@@ -39,8 +39,13 @@ RUN /usr/bin/easy_install supervisor-stdout
 ADD ./supervisord.conf /etc/supervisord.conf
 
 # Install Wordpress
-ADD http://wordpress.org/latest.tar.gz /usr/share/nginx/latest.tar.gz
-RUN cd /usr/share/nginx/ && tar xvf latest.tar.gz && rm latest.tar.gz
+RUN apt-get install -y wget
+#ADD http://wordpress.org/latest.tar.gz /usr/share/nginx/latest.tar.gz
+#ADD latest.tar.gz /usr/share/nginx/latest.tar.gz
+#ADD latest.tar.gz /tmp/latest.tar.gz
+#RUN cd /tmp && tar -xvf latest.tar.gz
+RUN cd /usr/share/nginx && wget http://wordpress.org/latest.tar.gz
+RUN cd /usr/share/nginx && tar -xvf latest.tar.gz && rm latest.tar.gz
 RUN mv /usr/share/nginx/www/5* /usr/share/nginx/wordpress
 RUN rm -rf /usr/share/nginx/www
 RUN mv /usr/share/nginx/wordpress /usr/share/nginx/www
