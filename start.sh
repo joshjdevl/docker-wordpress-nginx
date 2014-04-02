@@ -1,5 +1,6 @@
 #!/bin/bash
 if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
+  /usr/sbin/sshd
   #https://bbs.archlinux.org/viewtopic.php?id=131650
   rm -rf /var/lib/mysql/*
   mysql_install_db --user=mysql

@@ -51,11 +51,17 @@ RUN rm -rf /usr/share/nginx/www
 RUN mv /usr/share/nginx/wordpress /usr/share/nginx/www
 RUN chown -R www-data:www-data /usr/share/nginx/www
 
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN /usr/sbin/sshd
+RUN echo "root:josh" | chpasswd
+
 # Wordpress Initialization and Startup Script
 ADD ./start.sh /start.sh
 RUN chmod 755 /start.sh
 
 # private expose
-EXPOSE 80
+#EXPOSE 80
+#EXPOSE 22
 
 CMD ["/bin/bash", "/start.sh"]
